@@ -1,5 +1,5 @@
 import Lisk from 'lisk-elements'
-import socketCluster from 'socketcluster-client'
+import io from 'socket.io-client'
 
 const liskApi = Lisk.APIClient.createTestnetAPIClient([]);
 
@@ -10,6 +10,7 @@ export const PEERS_NEWBLOCK = 'peers/PEERS_NEWBLOCK'
 
 const initialState = {
   nodes: [],
+  blocks: [],
 }
 
 export default (state = initialState, action) => {
@@ -23,6 +24,11 @@ export default (state = initialState, action) => {
         ...state,
         nodes: action.data,
       }
+    case PEERS_NEWBLOCK:
+      return {
+        ...state,
+        blocks: [...state.blocks, action.data],
+      }
 
     default:
       return state
@@ -31,18 +37,13 @@ export default (state = initialState, action) => {
 
 export const initSockets = () => {
 	return dispatch => {
-		const socket = socketCluster.create({
-			path: '/socketcluster/',
-			hostname: 'testnet.lisk.io',
-		 	secure: true,
-			port: 443,
-		});
-		socket.on('blocks/change', (block) => {
-			dispatch({
-				type: PEERS_NEWBLOCK,
-				data: { block },
-			});
-		});
+    const connection = io.connect('https://testnet.lisk.io');
+    connection.on('blocks/change', (block) => {
+      dispatch({
+        data: block,
+        type: PEERS_NEWBLOCK,
+      });
+    });
 	}
 }
 
