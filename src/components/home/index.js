@@ -2,12 +2,6 @@ import React from 'react'
 import { push } from 'connected-react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {
-  increment,
-  incrementAsync,
-  decrement,
-  decrementAsync
-} from '../../store/reducers/counter'
 
 import {
 	requestPeers,
@@ -27,20 +21,6 @@ class Home extends React.Component {
 
 		return (
 		  <div>
-		    <h1>Home</h1>
-		    <p>Count: {props.count}</p>
-
-		    <p>
-		      <button onClick={props.increment}>Increment</button>
-		      <button onClick={props.incrementAsync} disabled={props.isIncrementing}>Increment Async</button>
-		    </p>
-
-		    <p>
-		      <button onClick={props.decrement}>Decrementing</button>
-		      <button onClick={props.decrementAsync} disabled={props.isDecrementing}>Decrement Async</button>
-		    </p>
-
-		    <p><button onClick={() => props.changePage()}>Go to about page via redux</button></p>
 		    {peers}
 		  </div>
 		);
@@ -49,20 +29,12 @@ class Home extends React.Component {
   
 
 const mapStateToProps = ({ counter, peers}) => ({
-  count: counter.count,
-  isIncrementing: counter.isIncrementing,
-  isDecrementing: counter.isDecrementing,
   nodes: peers.nodes,
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestPeers,
   initSockets,
-  increment,
-  incrementAsync,
-  decrement,
-  decrementAsync,
-  changePage: () => push('/about-us')
 }, dispatch)
 
 export default connect(
