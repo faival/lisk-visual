@@ -4,12 +4,13 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import {
-	requestPeers,
-	initSockets,
+    requestPeers,
+    initSockets,
 } from '../../store/reducers/peers'
 
 class Home extends React.Component {
 
+<<<<<<< HEAD
 	componentDidMount() {
 		this.props.initSockets();
 		this.props.requestPeers();
@@ -29,6 +30,27 @@ class Home extends React.Component {
 		  </div>
 		);
 	}
+=======
+    componentDidMount() {
+        this.props.initSockets();
+        this.props.requestPeers();
+    }
+    render () {
+
+        const { blocks } = this.props;
+        // const peers = props.nodes.map(node => (<p key={node.nonce}>{node.ip}</p>));
+        const renderedBlocks = blocks.map(block => (
+            <div key={block.id}>
+                <h1>{new Date(block.timestamp).toString()}</h1>
+            </div>));
+        return (
+          <div>
+                {/* {peers} */}
+                {renderedBlocks}
+          </div>
+        );
+    }
+>>>>>>> 9245e8b4874eb0005feffd04319ca14ecc87b7a7
 }
   
 
